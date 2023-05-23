@@ -1,0 +1,17 @@
+.animated-text {
+  animation: text-blink 1s infinite;
+}
+
+@keyframes text-blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
