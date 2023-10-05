@@ -1,4 +1,4 @@
-Jose Alcaraz is a highly skilled and experienced STEM programmer with a passion for solving real-world problems. She has a proven track record of success in developing innovative solutions using a variety of programming languages and technologies. Jose is a quick learner and is always eager to learn new things. She is also a team player and is always willing to help others.
+Jose Alcaraz is a highly skilled and experienced STEM programmer with a passion for solving real-world problems. He has a proven track record of success in developing innovative solutions using a variety of programming languages and technologies. Jose is a quick learner and is always eager to learn new things. He is also a team player and is always willing to help others.
 Skills
 Programming Languages: Java, Python, C++, C#, Go
 Operating Systems: Linux, Windows, MAC OSx, FreeBSD, Solaris, AIX, HP-UX
