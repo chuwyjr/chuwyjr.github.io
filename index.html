@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChuwyJr - Developer Portfolio</title>
+    <!-- Favicon: A simple, abstract code-like SVG icon (cyan themed, dark background) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3C!-- A stylized 'C' or abstract code pattern --%3E%3Crect x='0' y='0' width='100' height='100' fill='%23111827'/%3E%3Cpath d='M 25 25 L 75 25 L 75 35 L 35 35 L 35 65 L 75 65 L 75 75 L 25 75 Z' fill='%2300BCD4'/%3E%3Ccircle cx='50' cy='50' r='10' fill='%23FFFFFF' opacity='0.7'/%3E%3C/svg%3E">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js CDN for 3D animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         /* Custom styles for smooth scrolling */
         html {
@@ -15,9 +19,25 @@
         /* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; } */
 
-        /* Custom glow effect for the hero section, feel free to modify */
+        /* Custom glow effect for the hero section, adjusted for cyan theme */
         .glow-text {
-            text-shadow: 0 0 5px rgba(100, 255, 218, 0.5), 0 0 10px rgba(100, 255, 218, 0.3);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.3); /* Cyan glow */
+        }
+
+        /* Styles for the Three.js canvas background */
+        #lorentz-background { /* Reusing ID for the fractal background */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Ensures it's behind the hero content */
+            pointer-events: none; /* Make canvas non-interactive for mouse events */
+            opacity: 0.7; /* Subtly fade the background animation */
+        }
+        /* Ensure hero content is above the fractal background */
+        #hero .relative.z-10 {
+            z-index: 10;
         }
     </style>
 </head>
@@ -27,13 +47,13 @@
     <header class="bg-gray-900 sticky top-0 z-50 shadow-lg">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <div class="flex-shrink-0">
-                <a href="#hero" class="text-2xl font-bold text-teal-400">ChuwyJr</a>
+                <a href="#hero" class="text-2xl font-bold text-cyan-400">ChuwyJr</a>
             </div>
             <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
                     <a href="#about" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">About</a>
                     <a href="#skills" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Skills</a>
-                    <a href="#projects" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Projects</a>
+                    <a href="#projects" class="text-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Projects</a>
                     <a href="#contact" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Contact</a>
                 </div>
             </div>
@@ -65,23 +85,21 @@
     <main class="max-w-7xl mx-auto">
         <!-- Hero Section -->
         <section id="hero" class="relative min-h-screen flex items-center justify-center text-center px-4 py-16 overflow-hidden">
-            <!-- Background gradient/pattern -->
-            <div class="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-950 to-indigo-950 opacity-80"></div>
-            <div class="absolute inset-0 z-0 bg-[url('https://placehold.co/1920x1080/0d1117/1f2e3d?text=CODE')] bg-cover bg-center opacity-5"></div>
+            <!-- Three.js canvas for the fractal background -->
+            <canvas id="lorentz-background"></canvas>
 
-
-            <div class="relative z-10 p-8 md:p-12 bg-gray-800/60 rounded-3xl shadow-xl border border-gray-700/50 backdrop-blur-sm">
+            <div class="relative z-10 p-8 md:p-12 bg-gray-950/50 rounded-3xl shadow-xl border border-gray-700/50 backdrop-blur-sm">
                 <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white mb-4 leading-tight glow-text">
-                    Hi, I'm <span class="text-teal-400">ChuwyJr</span>
+                    Hi, I'm <span class="text-cyan-400">ChuwyJr</span>
                 </h1>
                 <p class="text-xl sm:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
                     Building the future, one line of code at a time.
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="#projects" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <a href="#projects" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-transform transform hover:scale-105 duration-300 ease-in-out">
                         View My Work
                     </a>
-                    <a href="#contact" class="inline-flex items-center justify-center px-8 py-3 border border-teal-600 text-base font-medium rounded-full shadow-lg text-teal-400 bg-transparent hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <a href="#contact" class="inline-flex items-center justify-center px-8 py-3 border border-cyan-600 text-base font-medium rounded-full shadow-lg text-cyan-400 bg-transparent hover:bg-cyan-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-transform transform hover:scale-105 duration-300 ease-in-out">
                         Get In Touch
                     </a>
                 </div>
@@ -90,7 +108,7 @@
 
         <!-- About Section -->
         <section id="about" class="px-4 py-16 bg-gray-900 rounded-3xl shadow-lg my-16 border border-gray-800">
-            <h2 class="text-4xl font-bold text-center text-teal-400 mb-10">About Me</h2>
+            <h2 class="text-4xl font-bold text-center text-cyan-400 mb-10">About Me</h2>
             <div class="max-w-3xl mx-auto text-lg text-gray-300 space-y-6">
                 <p>Hello! I'm ChuwyJr, a passionate developer with a keen interest in creating innovative solutions and exploring the cutting edge of technology. My journey in development began with a fascination for how software can shape the world, leading me to constantly learn and experiment with new tools and languages.</p>
                 <p>I thrive on challenges and enjoy diving deep into complex problems, whether it's building robust backend systems, crafting intuitive user interfaces, or delving into the exciting realm of AI and machine learning. I believe in writing clean, efficient, and well-documented code that not only functions flawlessly but is also a joy to maintain and scale.</p>
@@ -100,7 +118,7 @@
 
         <!-- Skills Section -->
         <section id="skills" class="px-4 py-16 bg-gray-900 rounded-3xl shadow-lg my-16 border border-gray-800">
-            <h2 class="text-4xl font-bold text-center text-teal-400 mb-10">My Skills</h2>
+            <h2 class="text-4xl font-bold text-center text-cyan-400 mb-10">My Skills</h2>
             <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
                 <!-- Skill Card 1 -->
                 <div class="bg-gray-800 p-6 rounded-xl shadow-md border border-gray-700 transition-transform transform hover:scale-105 duration-200">
@@ -141,7 +159,7 @@
 
         <!-- Projects Section -->
         <section id="projects" class="px-4 py-16 bg-gray-900 rounded-3xl shadow-lg my-16 border border-gray-800">
-            <h2 class="text-4xl font-bold text-center text-teal-400 mb-10">My Projects</h2>
+            <h2 class="text-4xl font-bold text-center text-cyan-400 mb-10">My Projects</h2>
             <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Project Card 1 -->
                 <div class="bg-gray-800 p-6 rounded-xl shadow-md border border-gray-700 transition-transform transform hover:translate-y-[-5px] duration-200">
@@ -149,7 +167,7 @@
                     <h3 class="text-2xl font-semibold text-white mb-3">Project Title One</h3>
                     <p class="text-gray-300 mb-4">A brief description of Project One. Highlight key technologies used and its purpose. This project involved [tech 1], [tech 2], and [tech 3].</p>
                     <div class="flex justify-end gap-3">
-                        <a href="#" class="text-teal-400 hover:text-teal-300 font-medium transition-colors duration-200">Live Demo &rarr;</a>
+                        <a href="#" class="text-cyan-400 hover:text-cyan-300 font-medium transition-colors duration-200">Live Demo &rarr;</a>
                         <a href="https://github.com/chuwyjr/your-project-repo" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-300 font-medium transition-colors duration-200">GitHub Repo &rarr;</a>
                     </div>
                 </div>
@@ -159,7 +177,7 @@
                     <h3 class="text-2xl font-semibold text-white mb-3">Project Title Two</h3>
                     <p class="text-gray-300 mb-4">A brief description of Project Two. This could be a web application, a script, a game, or anything you've built. Involved [tech 4] and [tech 5].</p>
                     <div class="flex justify-end gap-3">
-                        <a href="#" class="text-teal-400 hover:text-teal-300 font-medium transition-colors duration-200">Live Demo &rarr;</a>
+                        <a href="#" class="text-cyan-400 hover:text-cyan-300 font-medium transition-colors duration-200">Live Demo &rarr;</a>
                         <a href="https://github.com/chuwyjr/your-project-repo-2" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-300 font-medium transition-colors duration-200">GitHub Repo &rarr;</a>
                     </div>
                 </div>
@@ -169,14 +187,14 @@
 
         <!-- Contact Section -->
         <section id="contact" class="px-4 py-16 bg-gray-900 rounded-3xl shadow-lg my-16 border border-gray-800">
-            <h2 class="text-4xl font-bold text-center text-teal-400 mb-10">Get In Touch</h2>
+            <h2 class="text-4xl font-bold text-center text-cyan-400 mb-10">Get In Touch</h2>
             <div class="max-w-2xl mx-auto text-lg text-gray-300 text-center space-y-6">
                 <p>I'm always open to new opportunities, collaborations, or just a friendly chat! Feel free to reach out.</p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="mailto:your.email@example.com" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <a href="mailto:chuwyjr+github_contact@gmail.com" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-transform transform hover:scale-105 duration-300 ease-in-out">
                         Email Me
                     </a>
-                    <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-8 py-3 border border-gray-600 text-base font-medium rounded-full shadow-lg text-gray-300 bg-transparent hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <a href="https://linkedin.com/in/JoseAlcaraz414" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-8 py-3 border border-gray-600 text-base font-medium rounded-full shadow-lg text-gray-300 bg-transparent hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition-transform transform hover:scale-105 duration-300 ease-in-out">
                         LinkedIn
                     </a>
                     <a href="https://github.com/chuwyjr" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-8 py-3 border border-gray-600 text-base font-medium rounded-full shadow-lg text-gray-300 bg-transparent hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition-transform transform hover:scale-105 duration-300 ease-in-out">
@@ -214,6 +232,296 @@
 
         // Dynamic year for footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // --- THREE.JS FRACTAL ANIMATION SCRIPT ---
+        window.onload = function() {
+            const canvas = document.getElementById('lorentz-background');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0); // Transparent background for canvas
+
+            // Fractal parameters
+            const fractalRenderScaleCrystalline = 150; // For the Crystalline pattern
+            const fractalRenderScaleDragonCurve = 200; // For the 3D Dragon Curve-like pattern
+
+            const numPoints = 35000; // Total points (iterations) for each fractal
+            const burnInIterations = 500; // Number of initial IFS iterations to discard for stable points
+
+            // Global variables for animation control
+            let fractalData = []; // Array to hold pre-generated fractal data
+            let currentFractalIndex = 0;
+            const displayDuration = 10000; // Time fractal is fully displayed
+            const fadeOutDuration = 1000;  // Half of total transition
+            const revealAndFadeInDuration = 1000; // Other half, for revealing and fading in concurrently
+
+            // Animation state machine
+            const STATE_DISPLAYING = 0;
+            const STATE_FADING_OUT = 1;
+            const STATE_REVEALING = 2; // Includes fading in concurrently
+            let animationState = STATE_DISPLAYING;
+            let lastStateChangeTime = 0; // Timestamp of the last state change
+
+            // Fractal drawing progress
+            let currentPointsDisplayed = 0;
+
+            let targetOpacity = 0.7; // Target opacity for displayed fractal
+            let minOpacity = 0.00; // Minimum opacity during fade out (close to invisible)
+
+            // Instantiate THREE.Clock
+            const clock = new THREE.Clock();
+
+            // Function to generate a fractal (reusable for different patterns)
+            function generateFractal(type, numPts, burnIn, scale) {
+                const positions = new Float32Array(numPts * 3);
+                const colors = new Float32Array(numPts * 3);
+                let currentPoint = new THREE.Vector3(0, 0, 0);
+
+                let transforms;
+                let theoreticalMaxExtentEstimate;
+                let initialPoint = new THREE.Vector3(0, 0, 0); // Default initial point
+
+                if (type === 'crystalline') {
+                    // Crystalline / Starburst IFS (similar to Sierpinski Tetrahedron, but centered)
+                    transforms = [
+                        { matrix: new THREE.Matrix4().makeScale(0.5, 0.5, 0.5), translation: new THREE.Vector3(0.5, 0.5, 0.5), probability: 0.25 },
+                        { matrix: new THREE.Matrix4().makeScale(0.5, 0.5, 0.5), translation: new THREE.Vector3(-0.5, 0.5, -0.5), probability: 0.25 },
+                        { matrix: new THREE.Matrix4().makeScale(0.5, 0.5, 0.5), translation: new THREE.Vector3(0.5, -0.5, -0.5), probability: 0.25 },
+                        { matrix: new THREE.Matrix4().makeScale(0.5, 0.5, 0.5), translation: new THREE.Vector3(-0.5, -0.5, 0.5), probability: 0.25 }
+                    ];
+                    initialPoint = new THREE.Vector3(0.1, 0.1, 0.1); // Start slightly off origin for better scatter
+                    theoreticalMaxExtentEstimate = scale * 1.5;
+                } else if (type === 'dragonCurve') {
+                    // New 3D Dragon Curve-like Fractal
+                    // Two transformations for a generalized 3D Dragon Curve
+                    const rotationAngle1 = Math.PI / 2; // 90 degrees
+                    const rotationAngle2 = -Math.PI / 2; // -90 degrees
+
+                    transforms = [
+                        // Transform 1: Rotate around Z, scale, and translate
+                        {
+                            matrix: new THREE.Matrix4().set(
+                                Math.cos(rotationAngle1) * 0.707, -Math.sin(rotationAngle1) * 0.707, 0, 0,
+                                Math.sin(rotationAngle1) * 0.707, Math.cos(rotationAngle1) * 0.707, 0, 0,
+                                0, 0, 0.707, 0,
+                                0, 0, 0, 1
+                            ),
+                            translation: new THREE.Vector3(0.5, 0, 0),
+                            probability: 0.5
+                        },
+                        // Transform 2: Rotate around X, scale, and translate
+                        {
+                            matrix: new THREE.Matrix4().set(
+                                0.707, 0, 0, 0,
+                                0, Math.cos(rotationAngle2) * 0.707, -Math.sin(rotationAngle2) * 0.707, 0,
+                                0, Math.sin(rotationAngle2) * 0.707, Math.cos(rotationAngle2) * 0.707, 0,
+                                0.5, 0, 0, 1
+                            ),
+                            translation: new THREE.Vector3(-0.5, 0, 0),
+                            probability: 0.5
+                        }
+                    ];
+                    initialPoint = new THREE.Vector3(0, 0, 0);
+                    theoreticalMaxExtentEstimate = scale * 1.8; // Estimate its size
+                }
+
+                currentPoint.copy(initialPoint);
+                const totalIterations = numPts + burnIn;
+
+                for (let i = 0; i < totalIterations; i++) {
+                    let randomVal = Math.random();
+                    let chosenTransform;
+                    let cumulativeProb = 0;
+                    for (const t of transforms) {
+                        cumulativeProb += t.probability;
+                        if (randomVal <= cumulativeProb) {
+                            chosenTransform = t;
+                            break;
+                        }
+                    }
+
+                    // Apply the transformation
+                    currentPoint.applyMatrix4(chosenTransform.matrix);
+                    currentPoint.add(chosenTransform.translation);
+
+                    if (i >= burnIn) {
+                        const pointIndex = (i - burnIn);
+                        const i3 = pointIndex * 3;
+                        positions[i3] = currentPoint.x * scale;
+                        positions[i3 + 1] = currentPoint.y * scale;
+                        positions[i3 + 2] = currentPoint.z * scale;
+
+                        // Dynamic colors based on depth
+                        let zNormalized = (currentPoint.z + 1) / 2; // Default normalization from -1 to 1
+                        const color = new THREE.Color();
+                        // Adjust HSL for vibrant cyan-to-blue-green
+                        color.setHSL(0.55 + zNormalized * 0.1, 0.9, 0.6 + zNormalized * 0.2);
+                        colors[i3] = color.r;
+                        colors[i3 + 1] = color.g;
+                        colors[i3 + 2] = color.b;
+                    }
+                }
+                return { positions, colors, theoreticalMaxExtent: theoreticalMaxExtentEstimate };
+            }
+
+            // Pre-generate all fractal data with individual scales
+            fractalData.push(generateFractal('crystalline', numPoints, burnInIterations, fractalRenderScaleCrystalline));
+            fractalData.push(generateFractal('dragonCurve', numPoints, burnInIterations, fractalRenderScaleDragonCurve));
+
+            // Initialize geometry and material with the first fractal
+            const initialData = fractalData[currentFractalIndex];
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(initialData.positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(initialData.colors, 3));
+            geometry.setDrawRange(0, 0); // Initially draw no points
+
+            const material = new THREE.PointsMaterial({
+                size: 0.8, // Base size of each particle
+                vertexColors: true, // Use colors from the 'color' attribute
+                transparent: true,
+                opacity: minOpacity, // Start hidden
+                blending: THREE.AdditiveBlending, // Good for glowy particles
+                sizeAttenuation: true // Particles appear smaller when further away
+            });
+
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            // Function to set camera position to fit the CURRENT fractal
+            function setCameraPositionForCurrentFractal() {
+                const currentData = fractalData[currentFractalIndex];
+                const fovRad = THREE.MathUtils.degToRad(camera.fov);
+                const objectVisualExtent = currentData.theoreticalMaxExtent; // Use current fractal's extent
+
+                const aspect = window.innerWidth / window.innerHeight;
+
+                let distanceZ;
+                if (aspect > 1) { // Wider than tall screen
+                    // Camera needs to be further back to fit the width
+                    distanceZ = (objectVisualExtent / 2) / (Math.tan(fovRad / 2) * aspect);
+                } else { // Taller than wide or square screen
+                    // Camera needs to be further back to fit the height
+                    distanceZ = (objectVisualExtent / 2) / Math.tan(fovRad / 2);
+                }
+
+                const newBaseCameraZ = distanceZ * 1.05; // Slightly reduced padding to make it feel 'closer' to the edge, but still fully visible
+                // Smoothly interpolate camera position, but for now, directly set it as it's part of the state change
+                camera.position.set(0, 0, newBaseCameraZ);
+                camera.lookAt(0, 0, 0); // Ensure it looks at the center
+                camera.updateProjectionMatrix();
+            }
+
+            // --- Responsive Design ---
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                setCameraPositionForCurrentFractal(); // Recalculate and set base camera position on resize
+            }
+            window.addEventListener('resize', onWindowResize);
+
+            // Set initial camera position for the very first fractal
+            setCameraPositionForCurrentFractal();
+            lastStateChangeTime = clock.getElapsedTime() * 1000; // Initialize lastStateChangeTime
+
+            // Force initial reveal for the first fractal
+            animationState = STATE_REVEALING;
+
+            // --- Animation Loop ---
+            function animate() {
+                requestAnimationFrame(animate);
+
+                const elapsedTimeMs = clock.getElapsedTime() * 1000; // Get elapsed time in milliseconds
+                const timeInCurrentState = elapsedTimeMs - lastStateChangeTime;
+
+                switch (animationState) {
+                    case STATE_DISPLAYING:
+                        material.opacity = targetOpacity; // Ensure full opacity
+                        geometry.setDrawRange(0, numPoints); // Ensure all points are drawn
+
+                        if (timeInCurrentState > displayDuration) {
+                            animationState = STATE_FADING_OUT;
+                            lastStateChangeTime = elapsedTimeMs;
+                        }
+                        break;
+
+                    case STATE_FADING_OUT:
+                        const fadeOutProgress = timeInCurrentState / fadeOutDuration;
+                        material.opacity = THREE.MathUtils.lerp(targetOpacity, minOpacity, fadeOutProgress);
+
+                        if (fadeOutProgress >= 1) {
+                            material.opacity = minOpacity;
+                            // Switch to next fractal data
+                            currentFractalIndex = (currentFractalIndex + 1) % fractalData.length;
+                            const currentData = fractalData[currentFractalIndex];
+                            geometry.attributes.position.copyArray(currentData.positions);
+                            geometry.attributes.color.copyArray(currentData.colors);
+                            geometry.attributes.position.needsUpdate = true;
+                            geometry.attributes.color.needsUpdate = true;
+
+                            // Reset points count for new fractal and hide it
+                            currentPointsDisplayed = 0;
+                            geometry.setDrawRange(0, currentPointsDisplayed);
+
+                            // Adjust camera for new fractal's size immediately
+                            setCameraPositionForCurrentFractal();
+
+                            animationState = STATE_REVEALING;
+                            lastStateChangeTime = elapsedTimeMs;
+                        }
+                        break;
+
+                    case STATE_REVEALING:
+                        const revealProgress = timeInCurrentState / revealAndFadeInDuration;
+
+                        // Increment points displayed
+                        currentPointsDisplayed = Math.min(numPoints, Math.floor(revealProgress * numPoints));
+                        geometry.setDrawRange(0, currentPointsDisplayed);
+
+                        // Fade in concurrently
+                        material.opacity = THREE.MathUtils.lerp(minOpacity, targetOpacity, revealProgress);
+
+                        if (revealProgress >= 1) {
+                            material.opacity = targetOpacity;
+                            geometry.setDrawRange(0, numPoints); // Ensure all points are fully displayed
+                            animationState = STATE_DISPLAYING;
+                            lastStateChangeTime = elapsedTimeMs;
+                        }
+                        break;
+                }
+
+                // Apply dynamic camera orbit and subtle zoom (continuous throughout states)
+                const cameraOrbitRadius = 30; // Increased orbit radius for a wider sweep
+                const cameraZoomAmplitude = 20; // Increased zoom amplitude for more noticeable in/out
+                const cameraOrbitSpeedX = 0.005; // Slower orbit speed to feel more grand
+                const cameraOrbitSpeedY = 0.004; // Slower orbit speed
+                const cameraZoomSpeed = 0.002; // Slower zoom speed
+
+                // Note: baseCameraZ is updated by setCameraPositionForCurrentFractal()
+                // The orbit and zoom apply on top of the calculated baseCameraZ
+                camera.position.x = Math.sin(elapsedTimeMs * cameraOrbitSpeedX / 1000) * cameraOrbitRadius;
+                camera.position.y = Math.cos(elapsedTimeMs * cameraOrbitSpeedY / 1000) * cameraOrbitRadius; // Slight vertical orbit
+                camera.position.z = camera.position.z + Math.sin(elapsedTimeMs * cameraZoomSpeed / 1000) * cameraZoomAmplitude; // Subtle zoom in/out
+
+                camera.lookAt(scene.position); // Always look at the center of the fractal
+
+                // Particle pulsing effect (continuous throughout states)
+                material.size = 0.8 + Math.sin(elapsedTimeMs * 0.003) * 0.2; // Pulsate size slower
+                material.needsUpdate = true; // Essential to tell Three.js to update the material
+
+                // Rotate the entire fractal object (continuous throughout states)
+                const rotationSpeed = 0.001; // Slightly faster for overall dynamism
+                particles.rotation.y -= rotationSpeed * 0.5; // Slower Y rotation (reversed)
+                particles.rotation.x -= rotationSpeed * 0.3; // Slower X rotation (reversed)
+                particles.rotation.z -= rotationSpeed * 0.2; // Slower Z rotation (reversed)
+
+                renderer.render(scene, camera);
+            }
+
+            // Start the animation
+            animate();
+        };
     </script>
 </body>
 </html>
